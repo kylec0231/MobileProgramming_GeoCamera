@@ -69,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int SELECT_PHOTO = 3;
 
-    private static final LatLng MELBOURNE = new LatLng(36.0822, -94.1719);
+    private static final LatLng MELBOURNE = new LatLng(38.996851, -94.596083);
     private Marker melbourne = null;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,9 +157,15 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
 
                     myImage.setImageBitmap(eachBitmap);
 
+//                    mMap.addMarker(new MarkerOptions()
+//                            .position(new LatLng(latDouble, longDouble))
+//                            .title(files[i].getName()));
+
                     mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latDouble, longDouble))
-                            .title(files[i].getName()));
+                            .title(files[i].getName())
+                            .snippet(files[i].getAbsolutePath()));
+
 
 
                 }
@@ -234,6 +240,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
 //                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 //                photoPickerIntent.setType("image/*");
 //                startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+        Marker melbourne = mMap.addMarker(new MarkerOptions()
+                .position(MELBOURNE)
+                .title("Melbourne"));
+        melbourne.showInfoWindow();
 
     }
     @Override
@@ -316,7 +326,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
             Log.d("mylog", storageDir.toString());
 
             try {
-                image = File.createTempFile(name, ".jpeg", storageDir);
+                image = File.createTempFile(name, ".JPEG", storageDir);
 
             } catch (IOException e) {
                 Log.d("myLog", "Except : " + e.toString());
@@ -377,7 +387,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         mMap.setMyLocationEnabled(true);
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
-
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(this));
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(36.0822, -94.1719);
         float zoom = 14.0f;
